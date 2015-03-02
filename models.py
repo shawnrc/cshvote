@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 """
-models.py - Database models definitions
+models.py - Database model definitions
 author: shawn chowdhury [shawnrc@csh.rit.edu]
 date: 2015-03-01
 
@@ -30,7 +30,6 @@ class User(BaseModel):
     User: The standard user model.
     All user types will inherit from this (I think)
     """
-    uuid = CharField(null=False, unique=True)
     name = CharField()
 
 
@@ -39,7 +38,6 @@ class Question(BaseModel):
     Question: Superclass for I guess the maybe other types of votes?
     TODO determine how to handle multiple question types.
     """
-    uuid = CharField(null=False, unique=True)
     title = CharField(null=False)
     date = DateTimeField('Date')
     description = TextField()
@@ -49,16 +47,14 @@ class Question(BaseModel):
 
 class Choice(BaseModel):
     """
-
+    Choice: Class for choices that map to questions.
     """
-    uuid = CharField(null=False, unique=True)
     choice_text = CharField(null=False)
     question = ForeignKeyField(Question)
     votes = IntegerField(default=0)
 
 
 class Vote(BaseModel):
-    uuid = CharField(null=False, unique=True)
     choice = ForeignKeyField(Choice)
 
 
