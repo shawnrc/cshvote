@@ -19,13 +19,16 @@ the average voter."
 import flask_admin
 from flask import Flask, g
 
+
 # local
 from models import *
 from models import db as database
 
+
 # flask setup
 app = Flask(__name__)
 app.config.from_object(__name__)
+
 
 # db connection decorators
 @app.before_request

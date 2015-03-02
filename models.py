@@ -3,6 +3,7 @@
 models.py - Database model definitions
 author: shawn chowdhury [shawnrc@csh.rit.edu]
 date: 2015-03-01
+:credits: None
 
 "But why male models?"
 "Are you serious? I just told you that a moment ago."
@@ -41,6 +42,7 @@ class Question(BaseModel):
     description = TextField()
     owner = ForeignKeyField(User)
     type = CharField(null=False)
+    active = BooleanField(null=False)
 
     class Meta:
         order_by = ('-date',)

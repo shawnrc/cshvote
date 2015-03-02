@@ -3,6 +3,7 @@
 enums.py - Contains various enums used in this project.
 author: shawn chowdhury [shawnrc@csh.rit.edu]
 date: 2015-03-01
+:credits: None
 
 "I'll think of a good quote later."
 --
