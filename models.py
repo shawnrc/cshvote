@@ -9,8 +9,6 @@ date: 2015-03-01
 """
 
 from peewee import *
-
-global DB_NAME
 DB_NAME = 'cshvote.db'
 db = SqliteDatabase(DB_NAME)
 
@@ -39,10 +37,13 @@ class Question(BaseModel):
     TODO determine how to handle multiple question types.
     """
     title = CharField(null=False)
-    date = DateTimeField('Date')
+    date = DateTimeField('date')
     description = TextField()
     owner = ForeignKeyField(User)
     type = CharField(null=False)
+
+    class Meta:
+        order_by = ('-date',)
 
 
 class Choice(BaseModel):
