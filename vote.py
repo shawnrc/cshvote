@@ -17,12 +17,28 @@ the average voter."
 
 # external libs
 import flask_admin
-from flask import Flask
+from flask import Flask, g
 
+# local
+from models import *
+from models import db as database
 
+# flask setup
 app = Flask(__name__)
 app.config.from_object(__name__)
-admin = flask_admin.Admin(app)
+
+# db connection decorators
+@app.before_request
+def before_request():
+    g.db = database
+    g.db.connect()
+
+@app.after_request
+def after_request(response):
+    g.db.close()
+    return response
+
+# -----------------------------
 
 @app.route('/')
 def hello_world():
