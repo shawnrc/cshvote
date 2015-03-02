@@ -44,6 +44,7 @@ class Question(BaseModel):
     date = DateTimeField('Date')
     description = TextField()
     owner = ForeignKeyField(User)
+    type = CharField(null=False)
 
 
 class Choice(BaseModel):
@@ -58,15 +59,21 @@ class Choice(BaseModel):
 
 class Vote(BaseModel):
     uuid = CharField(null=False, unique=True)
-    question = ForeignKeyField(Question)
-
-
-class STVote(Vote):
-    pass
+    choice = ForeignKeyField(Choice)
 
 
 class PubVote(Vote):
     ForeignKeyField(User)
+
+
+class UserQuestion(BaseModel):
+    """
+    UserQuestion: Many-to-many table to assist in the task of determining
+                  who has voted on what.
+    """
+    user = ForeignKeyField(User)
+    question = ForeignKeyField(Question)
+
 
 
 
