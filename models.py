@@ -69,5 +69,6 @@ class UserQuestion(BaseModel):
     UserQuestion: Many-to-many table to assist in the task of determining
                   who has voted on what.
     """
+
     user = ForeignKeyField(User)
     question = ForeignKeyField(Question)
