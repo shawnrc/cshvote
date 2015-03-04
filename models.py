@@ -10,8 +10,7 @@ date: 2015-03-01
 """
 
 from peewee import *
-DB_NAME = 'cshvote.db'
-db = SqliteDatabase(DB_NAME)
+from vote import database as db
 
 
 class BaseModel(Model):
@@ -72,8 +71,3 @@ class UserQuestion(BaseModel):
     """
     user = ForeignKeyField(User)
     question = ForeignKeyField(Question)
-
-
-
-
-

@@ -57,3 +57,10 @@ target/
 
 # Idea
 .idea/*
+
+# do NOT track SQLite databases. BAD
+*.db
+*.sqlite
+
+# any debugging executables on Windows
+*.exe

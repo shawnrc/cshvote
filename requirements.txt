@@ -6,3 +6,4 @@ wtforms
 flask-wtf
 peewee
 wtf-peewee
+psycopg2

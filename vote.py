@@ -17,12 +17,14 @@ the average voter."
 
 # external libs
 import flask_admin
-from flask import Flask, g
+import peewee
+from flask import Flask, g, render_template
 
+DB_NAME = 'cshvote'
+database = peewee.PostgresqlDatabase(DB_NAME, user='postgres', password='h3rpd3rp')
 
 # local
 from models import *
-from models import db as database
 
 
 # flask setup
@@ -33,20 +35,39 @@ app.config.from_object(__name__)
 # db connection decorators
 @app.before_request
 def before_request():
-    g.db = database
-    g.db.connect()
+    database.connect()
+
 
 @app.after_request
 def after_request(response):
-    g.db.close()
+    database.close()
     return response
 
+
+# db intialization
+def create_tables():
+    database.connect()
+    User.create_table()
+    Question.create_table()
+    Choice.create_table()
+    Vote.create_table()
+    PubVote.create_table()
+    UserQuestion.create_table()
+    database.close()
+
+# -----------------------------
+# End Utilities
+# -----------------------------
+# Begin Routes
 # -----------------------------
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
-
+def home():
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(
+        host='0.0.0.0',
+        port=80,
+        debug=True,
+    )
