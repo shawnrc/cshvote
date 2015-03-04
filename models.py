@@ -7,6 +7,7 @@ date: 2015-03-01
 
 "But why male models?"
 "Are you serious? I just told you that a moment ago."
+--
 """
 
 from peewee import *
@@ -40,11 +41,22 @@ class Question(BaseModel):
     date = DateTimeField('date')
     description = TextField()
     owner = ForeignKeyField(User)
-    type = CharField(null=False)
     active = BooleanField(null=False)
 
     class Meta:
         order_by = ('-date',)
+
+
+class Category(BaseModel):
+    """
+
+    """
+    name = CharField(null=False,unique=True)
+
+
+class QuestionCategory(BaseModel):
+    question = ForeignKeyField(Question)
+    category = ForeignKeyField(Category)
 
 
 class Choice(BaseModel):

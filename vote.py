@@ -18,7 +18,7 @@ the average voter."
 # external libs
 import flask_admin
 import peewee
-from flask import Flask, g, render_template
+from flask import Flask, g, jsonify, render_template, request
 
 DB_NAME = 'cshvote'
 database = peewee.PostgresqlDatabase(DB_NAME, user='postgres', password='h3rpd3rp')
@@ -47,12 +47,13 @@ def after_request(response):
 # db intialization
 def create_tables():
     database.connect()
-    User.create_table()
-    Question.create_table()
-    Choice.create_table()
-    Vote.create_table()
-    PubVote.create_table()
-    UserQuestion.create_table()
+    User.create_table(True)
+    Question.create_table(True)
+    Choice.create_table(True)
+    Vote.create_table(True)
+    PubVote.create_table(True)
+    UserQuestion.create_table(True)
+    Category.create_table()
     database.close()
 
 # -----------------------------
@@ -63,7 +64,26 @@ def create_tables():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    categories = Category.select()
+    return render_template('index.html', categories=categories,
+                           exists=categories.exists()), 200
+
+@app.route('/add_cat', methods=['POST'])
+def new_category():
+
+    try:
+        new_cat = Category.create(name=request.form['categoryName'])
+    except IntegrityError:
+        return jsonify({
+            'status': "Category already exists."
+        }), 409
+
+    return jsonify({
+        'status': "Category Added."
+    }), 201
+
+
+
 
 if __name__ == '__main__':
     app.run(

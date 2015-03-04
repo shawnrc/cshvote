@@ -17,7 +17,46 @@
     
   </head>
   <body>
-    <h1>Hello, world!</h1>
+    <div class="container">
+
+        <div class="page-header">
+            <h1>CSH Vote</h1>
+            <p class="lead text-muted">Get out the Vote!</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Categories</h4>
+                {% if exists %}
+                    <ul class="list-unstyled">
+                        {% for category in categories %}
+                            <li>{{ category.name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <strong>Oh no!</strong>
+                    <p>There aren't any categories yet!</p>
+                {% endif %}
+
+                <form>
+                    <h4>Add a new category:</h4>
+                    <div class="form-group">
+                        <label for="categoryName">New Category</label>
+                        <input type="text" class="form-control"
+                               id="categoryName" placeholder="Category Name">
+                    </div>
+                    <button type="submit" class="btn
+                    btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
