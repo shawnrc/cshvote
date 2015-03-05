@@ -9,9 +9,6 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
@@ -30,17 +27,8 @@
 
         <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-4" id="categories">
+            <div id="categories">
                 <h4>Categories</h4>
-                {% if exists %}
-                    <ul class="list-unstyled">
-                        {% for category in categories %}
-                            <li>{{ category.name }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p><strong>Oh no!</strong> There aren't any categories yet!</p>
-                {% endif %}
             </div>
 
             <div class="col-md-4"></div>

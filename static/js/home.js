@@ -10,7 +10,17 @@
 var CategoryList = React.createClass({
 
     render: function() {
-        return
+        var categoryNodes = this.props.data.map(function(category, index) {
+            return(
+                <CategoryRow name={category.catName} key={index} />
+            );
+        });
+
+        return(
+            <ul className="list-group categoryList">
+                {categoryNodes}
+            </ul>
+        );
     }
 
 });
@@ -24,7 +34,7 @@ var CategoryForm = React.createClass({
 
         if (!catName) return;
 
-        this.props.onCategorySubmit({categoryName: catName});
+        this.props.onCategorySubmit({catName: catName});
 
         this.refs.catName.getDOMNode().value = '';
 
@@ -33,11 +43,11 @@ var CategoryForm = React.createClass({
         return(
             <form className="categoryForm" onSubmit={this.handleSubmit}>
                 <h4>Add a new category:</h4>
-                    <div class="form-group">
-                        <label for="categoryName">New Category</label>
-                        <input type="text" class="form-control" ref="catName" placeholder="Category Name" />
-                    </div>
-                    <button type="submit" class="btn btn-default" id="categorySubmit">Submit</button>
+                <div className="form-group">
+                    <label htmlFor="categoryName">New Category</label>
+                    <input type="text" className="form-control" ref="catName" placeholder="Category Name" />
+                </div>
+                <button type="submit" className="btn btn-default" id="categorySubmit">Submit</button>
             </form>
         );
     }
@@ -57,10 +67,9 @@ var CategoryBox = React.createClass({
 
             url: this.props.url,
             dataType: 'json',
+
             success: function(data) {
-
                 this.setState({data: data});
-
             }.bind(this),
 
             error: function(xhr, status, err){
@@ -74,10 +83,10 @@ var CategoryBox = React.createClass({
         var categories = this.state.data;
         categories.push(category);
 
-        this.setState({data: categories}, function () {
+        this.setState({data: categories}, function() {
 
             $.ajax({
-                url: this.props.url,
+                url: this.props.addUrl,
                 dataType: 'json',
                 type: 'POST',
                 data: category,
@@ -95,6 +104,31 @@ var CategoryBox = React.createClass({
         });
     },
 
+    handleCategoryDelete: function(catname) {
+
+        var categories = this.state.data;
+        var index;
+
+        for (index = 0; index < this.state.data.length; ++index) {
+            if (categories[index].name == catname) break;
+        }
+
+        categories.split(index, 1);
+
+        this.setState({data: categories}, function() {
+
+            $.ajax({
+                url: this.props.delUrl,
+                dataType: 'json',
+                type: 'DELETE',
+
+            })
+
+        });
+
+
+    },
+
     getInitialState: function() {
         return {data:[]}
     },
@@ -106,7 +140,7 @@ var CategoryBox = React.createClass({
 
     render: function() {
 
-        if ($(this.state.data).isEmptyObject()) {
+        if ($.isEmptyObject(this.state.data)) {
 
             return(
                 <div className="col-md-4 categoriesBox">
@@ -132,12 +166,17 @@ var CategoryBox = React.createClass({
 });
 
 
-
 var CategoryRow = React.createClass({
 
     render: function() {
         return(
-            <li>{this.props.name}</li>
+            <li className="list-group-item">
+                {this.props.name}
+                <button
+                    className="btn btn-danger btn-xs glyphicon glyphicon-remove pull-right"
+                    onClick={this.handleDelete}
+                />
+            </li>
         )
     }
 
@@ -147,7 +186,7 @@ var CategoryRow = React.createClass({
 $(document).ready(function() {
 
     React.render(
-        <CategoryBox url="/get_cats" pollInterval={2000} />,
+        <CategoryBox url="/get_cats" addUrl="/add_cats" delUrl="/del_url" pollInterval={2000} />,
         document.getElementById('categories')
     );
 

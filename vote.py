@@ -17,6 +17,7 @@ the average voter."
 
 # external libs
 import flask_admin
+import json
 import peewee
 from flask import Flask, g, jsonify, render_template, request
 
@@ -64,15 +65,15 @@ def create_tables():
 
 @app.route('/')
 def home():
-    categories = Category.select()
-    return render_template('index.html', categories=categories,
-                           exists=categories.exists()), 200
+    return render_template(
+        'index.html'
+    ), 200
 
 @app.route('/add_cats', methods=['POST'])
 def new_category():
 
     try:
-        new_cat = Category.create(name=request.form['categoryName'])
+        Category.create(name=request.form['catName'])
     except IntegrityError:
         return jsonify({
             'status': "Category already exists."
@@ -86,8 +87,30 @@ def new_category():
 @app.route('/get_cats', methods=['GET'])
 def get_categories():
 
-    return jsonify(dict(Category.select())), 200
+    parcel = Category.select()
 
+    response = []
+
+    for row in parcel:
+        response.append({'catName': row.name})
+
+    return json.dumps(response), 200
+
+
+@app.route('/del_cars', methods=['DELETE'])
+def delete_categories():
+
+    category = Category.get(Category.name == request.form['catName'])
+    dels = category.delete_instance()
+
+    if not dels:
+        return jsonify({
+            'status': "Category not found."
+        }), 304
+
+    return jsonify({
+        'status': "Resource successfully deleted."
+    }), 200
 
 if __name__ == '__main__':
     app.run(
