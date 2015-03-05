@@ -97,7 +97,7 @@ def get_categories():
     return json.dumps(response), 200
 
 
-@app.route('/del_cars', methods=['DELETE'])
+@app.route('/del_cats', methods=['DELETE'])
 def delete_categories():
 
     category = Category.get(Category.name == request.form['catName'])
