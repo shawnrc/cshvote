@@ -12,7 +12,11 @@ var CategoryList = React.createClass({
     render: function() {
         var categoryNodes = this.props.data.map(function(category, index) {
             return(
-                <CategoryRow name={category.catName} key={index} />
+                <CategoryRow
+                    name={category.catName}
+                    key={index}
+                    deleteHandler={this.deleteHandler}
+                />
             );
         });
 
@@ -96,7 +100,7 @@ var CategoryBox = React.createClass({
                 }.bind(this),
 
                 error: function(xhr, status, err) {
-                    console.error(this.props.url, status, err.toString())
+                    console.error(this.props.addUrl, status, err.toString())
                 }.bind(this)
 
             });
@@ -104,13 +108,13 @@ var CategoryBox = React.createClass({
         });
     },
 
-    handleCategoryDelete: function(catname) {
+    handleCategoryDelete: function(category) {
 
         var categories = this.state.data;
         var index;
 
         for (index = 0; index < this.state.data.length; ++index) {
-            if (categories[index].name == catname) break;
+            if (categories[index].name == category.name) break;
         }
 
         categories.split(index, 1);
@@ -121,11 +125,19 @@ var CategoryBox = React.createClass({
                 url: this.props.delUrl,
                 dataType: 'json',
                 type: 'DELETE',
+                data: category,
 
-            })
+                success: function(data) {
+                    this.setState({data: data});
+                }.bind(this),
+
+                error: function(xhr, status, err) {
+                    console.error(this.props.delUrl, status, err.toString())
+                }.bind(this)
+
+            });
 
         });
-
 
     },
 
@@ -155,7 +167,7 @@ var CategoryBox = React.createClass({
         return(
             <div className="col-md-4 categoriesBox">
                 <h4>Categories</h4>
-                <CategoryList data={this.state.data} />
+                <CategoryList data={this.state.data} deleteHandler={this.handleCategoryDelete} />
                 <CategoryForm onCategorySubmit={this.handleCategorySubmit} />
             </div>
         );
@@ -168,9 +180,24 @@ var CategoryBox = React.createClass({
 
 var CategoryRow = React.createClass({
 
+    handleDelete: function(e) {
+        e.preventDefault();
+
+        console.log(this.refs.rowName);
+        console.log(this.refs.rowName.getDOMNode());
+        console.log(this.refs.rowName.getDOMNode().value());
+        console.log(this.refs.rowName.getDOMNode().value().trim());
+        var catName = this.refs.rowName.getDOMNode().value().trim();
+
+        if(!catName) return;
+
+        CategoryBox.handleCategoryDelete({catName: catName});
+
+    },
+
     render: function() {
         return(
-            <li className="list-group-item">
+            <li className="list-group-item" ref="rowName">
                 {this.props.name}
                 <button
                     className="btn btn-danger btn-xs glyphicon glyphicon-remove pull-right"
