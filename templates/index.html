@@ -19,9 +19,6 @@
     <script src="http://fb.me/react-0.12.2.js"></script>
     <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
 
-    <!-- Logic for this page -->
-    <script type="text/jsx" src="/static/js/home.js"></script>
-
   </head>
   <body>
     <div class="container">
@@ -33,7 +30,7 @@
 
         <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-4" id="categoriesBox">
+            <div class="col-md-4" id="categories">
                 <h4>Categories</h4>
                 {% if exists %}
                     <ul class="list-unstyled">
@@ -44,16 +41,6 @@
                 {% else %}
                     <p><strong>Oh no!</strong> There aren't any categories yet!</p>
                 {% endif %}
-
-                <form>
-                    <h4>Add a new category:</h4>
-                    <div class="form-group">
-                        <label for="categoryName">New Category</label>
-                        <input type="text" class="form-control"
-                               id="categoryName" placeholder="Category Name">
-                    </div>
-                    <button type="submit" class="btn btn-default" id="categorySubmit">Submit</button>
-                </form>
             </div>
 
             <div class="col-md-4"></div>
@@ -71,5 +58,7 @@
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
+    <!-- Logic for this page -->
+    <script type="text/jsx;harmony=true" src="/static/js/home.js"></script>
   </body>
 </html>

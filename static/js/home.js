@@ -17,6 +17,31 @@ var CategoryList = React.createClass({
 
 var CategoryForm = React.createClass({
 
+    handleSubmit: function(e) {
+        e.preventDefault();
+
+        var catName = this.refs.catName.getDOMNode().value.trim();
+
+        if (!catName) return;
+
+        this.props.onCategorySubmit({categoryName: catName});
+
+        this.refs.catName.getDOMNode().value = '';
+
+    },
+    render: function() {
+        return(
+            <form className="categoryForm" onSubmit={this.handleSubmit}>
+                <h4>Add a new category:</h4>
+                    <div class="form-group">
+                        <label for="categoryName">New Category</label>
+                        <input type="text" class="form-control" ref="catName" placeholder="Category Name" />
+                    </div>
+                    <button type="submit" class="btn btn-default" id="categorySubmit">Submit</button>
+            </form>
+        );
+    }
+
 
 });
 
@@ -80,6 +105,19 @@ var CategoryBox = React.createClass({
     },
 
     render: function() {
+
+        if ($(this.state.data).isEmptyObject()) {
+
+            return(
+                <div className="col-md-4 categoriesBox">
+                    <h4>Categories</h4>
+                    <p><strong>Oh no!</strong> There aren't any categories yet!</p>
+                    <CategoryForm onCategorySubmit={this.handleCategorySubmit} />
+                </div>
+            );
+
+        }
+
         return(
             <div className="col-md-4 categoriesBox">
                 <h4>Categories</h4>
@@ -109,8 +147,8 @@ var CategoryRow = React.createClass({
 $(document).ready(function() {
 
     React.render(
-        <CategoryBox />,
-        document.getElementById('categoriesBox')
+        <CategoryBox url="/get_cats" pollInterval={2000} />,
+        document.getElementById('categories')
     );
 
 });
