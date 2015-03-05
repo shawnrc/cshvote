@@ -68,7 +68,7 @@ def home():
     return render_template('index.html', categories=categories,
                            exists=categories.exists()), 200
 
-@app.route('/add_cat', methods=['POST'])
+@app.route('/add_cats', methods=['POST'])
 def new_category():
 
     try:
@@ -83,11 +83,15 @@ def new_category():
     }), 201
 
 
+@app.route('/get_cats', methods=['GET'])
+def get_categories():
+
+    return jsonify(dict(Category.select())), 200
 
 
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
-        port=80,
+        port=5000,
         debug=True,
     )
