@@ -15,7 +15,7 @@ var CategoryList = React.createClass({
         var index;
 
         for (index = 0; index < this.props.data.length; ++index) {
-            if (categories[index].name == category.name) break;
+            if (categories[index].name === category.name) break;
         }
 
         categories.splice(++index, 1);
