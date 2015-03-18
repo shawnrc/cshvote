@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html ng-app="CSHVote" lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CSH Vote</title>
-
-    <!-- Stack Trace -->
-    <script src="/static/js/stacktrace.js"></script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -18,9 +15,9 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-    <!-- Facebook React -->
-    <script src="http://fb.me/react-0.12.2.js"></script>
-    <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+    <!-- AngularJS, courtesy of Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
 
   </head>
   <body>
@@ -31,7 +28,7 @@
             <p class="lead text-muted">Get out the Vote!</p>
         </div>
 
-        <div class="row">
+        <div class="row" ng-controller="CategoriesController as categories">
             <div class="col-md-4"></div>
             <div id="categories">
                 <h4>Categories</h4>
@@ -49,6 +46,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
     <!-- Logic for this page -->
-    <script type="text/jsx;harmony=true" src="/static/js/home.js"></script>
+    <script type="text/javascript" src="/static/js/controllers.js"></script>
   </body>
 </html>
