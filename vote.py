@@ -60,16 +60,24 @@ def create_tables():
 # -----------------------------
 # End Utilities
 # -----------------------------
-# Begin Routes
+# Begin API
 # -----------------------------
 
-@app.route('/')
-def home():
-    return render_template(
-        'index.html'
-    ), 200
+@app.route('/api/categories', methods=['GET'])
+def get_categories():
 
-@app.route('/add_cats', methods=['POST'])
+    parcel = Category.select()
+
+    response = []
+
+    for row in parcel:
+        response.append({'catName': row.name})
+
+    return json.dumps(response), 200
+
+# -----------------------------
+# DEBUG
+@app.route('/api/add_cats', methods=['POST'])
 def new_category():
 
     try:
@@ -82,20 +90,6 @@ def new_category():
     return jsonify({
         'status': "Category Added."
     }), 201
-
-
-@app.route('/get_cats', methods=['GET'])
-def get_categories():
-
-    parcel = Category.select()
-
-    response = []
-
-    for row in parcel:
-        response.append({'catName': row.name})
-
-    return json.dumps(response), 200
-
 
 @app.route('/del_cats', methods=['DELETE'])
 def delete_categories():
@@ -111,6 +105,16 @@ def delete_categories():
     return jsonify({
         'status': "Resource successfully deleted."
     }), 200
+
+# -----------------------------
+# End API
+# -----------------------------
+
+@app.route('/')
+def home():
+    return render_template(
+        'index.html'
+    ), 200
 
 
 if __name__ == '__main__':
