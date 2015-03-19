@@ -13,7 +13,7 @@ from hashlib import md5
 
 
 class VoteSystem(object):
-    STV = md5("Single transferable vote")
+    IRV = md5("Instant-runoff voting")
     FPP = md5("First-past-the-post")
     APV = md5("Approval voting")
 
