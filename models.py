@@ -52,6 +52,7 @@ class Category(BaseModel):
 
     """
     name = CharField(null=False,unique=True)
+    pretty_name = CharField()
 
 
 class QuestionCategory(BaseModel):

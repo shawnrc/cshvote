@@ -62,14 +62,16 @@
 
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"
                  ng-controller="CategoriesController as catCtrl"
-            >
+                >
                 <div class="list-group">
                     <a  class="list-group-item"
                         ng-repeat="category in catCtrl.categories"
-                        ng-href="/topic/{{ category.catName }}"
-                        ng-class="{ 'active':  (category.catName === 'All') }"
-                    >
-                        {{category.catName}}
+                        ng-href="/topics/{{ category.catName }}"
+                        ng-class="{ 'active':
+                            ((category.catName === 'all' && catCtrl.isSet('/')) || (catCtrl.isSet('/topics/' + category.catName)))
+                        }"
+                        >
+                        {{category.prettyName}}
                     </a>
                 </div>
 

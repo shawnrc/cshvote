@@ -20,6 +20,7 @@ import flask_admin
 import json
 import peewee
 from flask import Flask, g, jsonify, render_template, request
+from jinja2 import utils
 
 DB_NAME = 'cshvote'
 database = peewee.PostgresqlDatabase(DB_NAME, user='postgres', password='h3rpd3rp')
@@ -71,17 +72,27 @@ def get_categories():
     response = []
 
     for row in parcel:
-        response.append({'catName': row.name})
+        response.append({
+            'catName': row.name,
+            'prettyName': row.pretty_name
+        })
 
     return json.dumps(response), 200
 
+
 # -----------------------------
 # DEBUG
-@app.route('/api/add_cats', methods=['POST'])
+@app.route('/api/add_cat', methods=['POST'])
 def new_category():
+    parcel = request.get_json()
+    pretty_name = str(utils.escape(parcel['catName']))
+    name = '-'.join(pretty_name.lower().split())
 
     try:
-        Category.create(name=request.form['catName'])
+        Category.create(
+            name=name,
+            pretty_name=pretty_name
+        )
     except IntegrityError:
         return jsonify({
             'status': "Category already exists."
@@ -91,7 +102,7 @@ def new_category():
         'status': "Category Added."
     }), 201
 
-@app.route('/del_cats', methods=['DELETE'])
+@app.route('/del_cat', methods=['DELETE'])
 def delete_categories():
 
     category = Category.get(Category.name == request.form['catName'])
@@ -116,6 +127,12 @@ def home():
         'index.html'
     ), 200
 
+@app.route('/admin')
+@app.route('/admin/')
+def admin():
+    return render_template(
+        'admin.html'
+    ), 200
 
 if __name__ == '__main__':
     app.run(
